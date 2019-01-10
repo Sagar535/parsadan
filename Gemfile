@@ -34,6 +34,11 @@ gem 'jbuilder', '~> 2.5'
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
+  gem 'minitest'
+  gem 'minitest-reporters'
+  gem 'guard'
+  gem 'guard-minitest'
+  gem 'rails-controller-testing'
   # Use sqlite3 as the database for Active Record
   gem 'sqlite3'
   # Adds support for Capybara system testing and selenium driver
