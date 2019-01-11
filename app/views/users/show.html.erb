@@ -1,0 +1,20 @@
+<div class="row">
+	<aside class="col-md-4">
+		<section class="user_info">
+			<h1>
+			<%= gravatar_for @user, size: 50%>
+			<%= @user.name %>
+		</h1>
+		</section>
+	</aside>
+</div>
+
+<div class="jumbotron">
+	<p>The user details are here:</p>
+
+	<%= @user.name %>
+	<%= @user.email %>
+
+	<p>This page was last refreshed at: </p>
+	<%= Time.now %>
+</div>
