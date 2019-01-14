@@ -12,6 +12,8 @@ gem 'rails', '~> 5.1.6', '>= 5.1.6.1'
 gem 'bcrypt'
 # For desing responsive bootstrap
 gem 'bootstrap-sass', '3.3.7'
+gem 'jquery-ui-rails'
+gem 'jquery-rails'
 # Use Puma as the app server
 gem 'puma', '~> 3.7'
 # Use SCSS for stylesheets
