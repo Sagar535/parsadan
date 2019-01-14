@@ -32,6 +32,8 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
   		}
   	end
 
+    assert_
+
   	follow_redirect!
   	assert_template 'users/show'
 
