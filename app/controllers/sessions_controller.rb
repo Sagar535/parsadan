@@ -6,14 +6,17 @@ class SessionsController < ApplicationController
   def create
   	@user = User.find_by(email: params[:session][:email].downcase)
 
-  	if @user && @user.authenticate(params[:session][:password])
-  		log_in @user
+    if @user && @user.activated && @user.authenticate(params[:session][:password])
+      log_in @user
       params[:session][:remember_me] == '1' ? remember(@user) : forget(@user)
-  		redirect_back_or @user
-  	else
-  		flash.now[:danger] = "Invalid email/password combo"
-  		render 'new'
-  	end
+      redirect_back_or @user
+    elsif @user && @user.activated
+      flash[:warning] = "Your account is not activated yet. Please check your mail."
+      render 'new'
+    else
+      flash.now[:danger] = "Invalid email/password combo"
+      render 'new'
+    end
   end
 
   def destroy
