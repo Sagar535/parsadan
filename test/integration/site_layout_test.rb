@@ -8,6 +8,14 @@ class SiteLayoutTest < ActionDispatch::IntegrationTest
 		assert_select "a[href=?]", helf_path
 		assert_select "a[href=?]", about_path, count: 1
 		assert_select "a[href=?]", contact_path, count: 1
+
+		@user = users(:sagar)
+		log_in_as(@user)
+		follow_redirect!
+		assert_select "a[href=?]", users_path
+		assert_select "a[href=?]", user_path(@user)
+		assert_select "a[href=?]", logout_path
+		assert_select "a[href=?]", edit_user_path(@user)
 	end
 
 	test "signup links" do
