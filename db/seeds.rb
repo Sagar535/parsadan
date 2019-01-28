@@ -35,3 +35,19 @@ users = User.take(6)
 	content = Faker::Lorem.sentence(5)
 	users.each { |user| user.microposts.create!(content: content) }
 end
+
+# first user follow users from 2 to 51
+# have 3 to 41 users follow user1 i.e. user
+
+users = User.all
+user = users.first
+followings = users[2..51]
+followers = users[3..41]
+
+followings.each do |following| 
+	user.follow(following)
+end
+
+followers.each do |follower|
+	follower.follow(user)
+end

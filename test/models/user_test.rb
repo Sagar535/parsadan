@@ -4,6 +4,8 @@ class UserTest < ActiveSupport::TestCase
   def setup 
   	@user = User.new(name: "Example User", email: "user@example.com",
   					password: 'example', password_confirmation: 'example')
+    @user1 = users(:sagar)
+    @user2 = users(:shikhar)
   end
 
   test "should be valid" do
@@ -76,5 +78,23 @@ class UserTest < ActiveSupport::TestCase
   test "password length must be equal or greater than 6" do
   	@user.password = @user.password_confirmation = "a" * 5
   	assert_not @user.valid?
+  end
+
+  # should be able to follow and unfollow other user
+  test "able to follow and unfollow other user" do 
+    # simulate unfollowing
+    @user1.unfollow(@user2)
+    assert_not @user1.following?(@user2)
+    # simulate following
+    @user1.follow(@user2)
+    assert @user1.following?(@user2)
+    assert @user2.follower?(@user1)
+    # make sure the stats are correct
+    assert_difference 'Relationship.count', -1 do 
+      @user1.unfollow(@user2)
+    end
+    assert_difference 'Relationship.count', 1 do 
+      @user1.follow(@user2)
+    end
   end
 end
