@@ -1,3 +1,5 @@
+require 'sidekiq/web'
+
 Rails.application.routes.draw do
   get 'password_resets/new'
 
@@ -30,5 +32,7 @@ Rails.application.routes.draw do
     end
   end
   resources :relationships, only: [:create, :destroy]
+
+  mount Sidekiq::Web, at: "/sidekiq"
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end
