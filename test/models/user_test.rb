@@ -97,4 +97,28 @@ class UserTest < ActiveSupport::TestCase
       @user1.follow(@user2)
     end
   end
+
+  # microposts for both followed users and the user itself should be included in the feed
+  # post from the unfollowed user should not be included
+
+  test "feed should have right posts" do
+    user3 = users(:ram)
+    #Post from followed user
+    @user2.microposts.each do |post|
+      assert @user1.feed.include?(post)
+    end
+    #Post from self
+    @user1.microposts.each do |post|
+      assert @user1.feed.include?(post)
+    end
+    # Post from unfollowed user
+    @user1.unfollow(user3)
+    assert_not @user1.following?(user3)
+    user3.microposts.each do |post| 
+      if @user1.feed.include?(post)
+        Rails::logger.debug "THE POST #{post.content}"
+      end
+      assert_not @user1.feed.include?(post)
+    end
+  end
 end

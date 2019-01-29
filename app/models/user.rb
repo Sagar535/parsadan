@@ -77,7 +77,7 @@ class User < ApplicationRecord
 	end
 
 	def feed
-		Micropost.where("user_id = ?", id).order("created_at DESC")
+		Micropost.where("user_id IN (?) OR user_id = ?", following.map(&:id), id).order("created_at DESC")
 	end
 
 	def follow(other_user)
