@@ -61,7 +61,19 @@ RSpec.describe SessionsController, type: :controller do
 				expect(response).to render_template('sessions/new')
 			end
 		end
-		context "when all is well" do end
+		context "when all is well" do
+			it "should redirect to user page" do 
+				user
+				post :create, params: valid_params
+				expect(response).to redirect_to(user)
+			end
+
+			it "should log in the user" do 
+				user
+				post :create, params: valid_params
+				expect(is_logged_in?).to be true
+			end
+		end
 	end
 
 	describe "DELETE #destroy" do 
