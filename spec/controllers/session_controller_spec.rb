@@ -14,7 +14,16 @@ RSpec.describe SessionsController, type: :controller do
 	let(:valid_params) {
 		{
 			session: {
-				emial: 'random@random.com',
+				email: 'random@random.com',
+				password: 'gaggag'
+			}
+		}
+	}
+
+	let(:not_active_params) {
+		{
+			session: {
+				email: 'non@non.non',
 				password: 'gaggag'
 			}
 		}
@@ -46,7 +55,12 @@ RSpec.describe SessionsController, type: :controller do
 				expect(response).to render_template('sessions/new')
 			end
 		 end
-		context "when user is not activated" do end
+		context "when user is not activated" do
+			it "should render login page" do 
+				post :create, params: not_active_params, session: {}
+				expect(response).to render_template('sessions/new')
+			end
+		end
 		context "when all is well" do end
 	end
 
