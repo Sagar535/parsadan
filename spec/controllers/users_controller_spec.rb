@@ -4,56 +4,34 @@ require './test/test_helper'
 
 RSpec.describe UsersController, type: :controller do 
 	# users with admin privilege
-	let(:sagar) {
-		create(:super_user)
-	}
+	let(:super_user) { create(:user, :super) }
 
-	let (:super_user) {
-		create(:other_super_user)
-	}
+	let (:another_super_user) { create(:user, :super) }
 
 	# user without admin privilege
-	let(:shikhar) {
-		create(:user)
-	}
+	let(:shikhar) { create(:user) }
 
 	# valid seesion for shikhar
-	let(:valid_session) {
-		{
-			user_id: shikhar.id
-		}
-	}
+	let(:valid_session) { { user_id: shikhar.id } }
 
 	# valid admin session
-	let(:admin_session) {
-		{
-			user_id: sagar.id
-		}
-	}
+	let(:admin_session) { { user_id: super_user.id } }
 
 	#valid user parameters 
-	let (:valid_params) {
-		{
-			user: {
-				name: 'sagar',
-				email: 'gag@gag.gag',
-				password: 'gaggag',
-				password_confirmation: 'gaggag'
-			}
-		}
-	}
+	 let (:valid_params) do
+       {
+           user: {
+                   name: 'sagar',
+                   email: 'gag@gag.gag',
+                   password: 'gaggag',
+                   password_confirmation: 'gaggag'
+           }
+       }
+   end
 
 	# invalid user parameters
-	let (:invalid_params) {
-		{
-			user: {
-				name: '',
-				email: '',
-				password: '',
-				password_confirmation: ''
-			}
-		}
-	}
+	let (:invalid_params) { { user: build(:user, email: '').attributes } }
+
 
 	describe "GET #new" do 
 		it "should get new" do 
@@ -99,7 +77,7 @@ RSpec.describe UsersController, type: :controller do
 		end
 
 		context "with valid params" do 
-			it "should create a user on sign up" do 
+			it "should create a user on sign up" do
 				expect {
 					post :create, params: valid_params
 				}.to change(User, :count).by(1)
@@ -143,7 +121,7 @@ RSpec.describe UsersController, type: :controller do
 		context "when user is not correct" do 
 			it "should redirect to root_url" do 
 				put :update, params: {
-					id: sagar.id,
+					id: super_user.id,
 					user: {
 						name: 'Shikhar',
 						email: 'shikhar@gag.gag'
@@ -212,16 +190,16 @@ RSpec.describe UsersController, type: :controller do
 
 		context "when user is admin" do 
 			it "should not allow to delete other admin" do 
+				another_super_user
 				super_user
-				sagar
 				expect {
-					delete :destroy, params: {id: super_user.id},
+					delete :destroy, params: {id: another_super_user.id},
 					session: admin_session
 				}.not_to change(User, :count)
 			end
 
 			it "should delete other user" do 
-				sagar
+				super_user
 				shikhar
 				expect {
 					delete :destroy, params: {id: shikhar.id},

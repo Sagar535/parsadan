@@ -1,35 +1,13 @@
 FactoryBot.define do
   factory :user do
     name {'random'}
-    email {'random@random.com'}
+    sequence(:email){|n| "user#{n}@factory.com" }
     password {'gaggag'}
     password_confirmation {'gaggag'}
     activated {true}
 
-    factory :super_user do 
-	  	name {'Sagar Shah'}
-	  	email {'sagar@sagarshah.com'}
-	  	password {'gaggag'}
-	  	password_confirmation {'gaggag'}
-	  	admin {true}
-      activated {true}
-  	end	
+    trait(:super) { admin { true } }
 
-  	factory :other_super_user do 
-  		name {'Super'}
-  		email {'super@super.com'}
-  		password {'gaggag'}
-  		password_confirmation {'gaggag'}
-  		admin {true}
-      activated {true}
-  	end
-
-    factory :non_active_user do 
-      name {'non active'}
-      email {'non@non.non'}
-      password {'gaggag'}
-      password_confirmation {'gaggag'}
-      activated {false}
-    end
+    trait(:non_active) { activated { false } }
   end
 end

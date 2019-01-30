@@ -3,7 +3,7 @@ class MicropostsController < ApplicationController
 	before_action :correct_user, only: :destroy
 
 	def create
-		if (logged_in?) 
+		if (logged_in?)
 			@micropost = current_user.microposts.build(micropost_params)
 			@feed_items = current_user.feed.paginate(page: params[:page])
 			if @micropost.save
@@ -16,9 +16,11 @@ class MicropostsController < ApplicationController
 	end
 
 	def destroy
-		@micropost.destroy
-		flash[:success] = "Micropost deleted"
-		redirect_to request.referrer || root_url
+		if (logged_in?) 
+			@micropost.destroy
+			flash[:success] = "Micropost deleted"
+			redirect_to request.referrer || root_url
+		end
 	end
 
 	private
@@ -28,7 +30,7 @@ class MicropostsController < ApplicationController
 		end
 
 		def correct_user
-			@micropost = current_user.microposts.find_by(id: params[:id])
+			@micropost = current_user.microposts.find_by(id: params[:id]) if current_user
 			redirect_to root_url if @micropost.nil?
 		end
 end
