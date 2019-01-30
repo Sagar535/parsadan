@@ -94,6 +94,10 @@ RSpec.describe UsersController, type: :controller do
 	end
 
 	describe "POST #create" do 
+		before (:all) do 
+			ActionMailer::Base.deliveries.clear
+		end
+
 		context "with valid params" do 
 			it "should create a user on sign up" do 
 				expect {
@@ -104,6 +108,12 @@ RSpec.describe UsersController, type: :controller do
 			it "should redirect to root path" do 
 				post :create, params: valid_params
 				expect(response).to redirect_to(root_url)
+			end
+
+			it "should send a mail to user" do
+				expect {
+					post :create, params: valid_params
+				}.to change(ActionMailer::Base.deliveries, :size).by(1)
 			end
 		end
 
