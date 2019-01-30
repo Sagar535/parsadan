@@ -12,5 +12,13 @@ FactoryBot.define do
 	  	password_confirmation {'gaggag'}
 	  	admin {true}
   	end	
+
+  	factory :other_super_user do 
+  		name {'Super'}
+  		email {'super@super.com'}
+  		password {'gaggag'}
+  		password_confirmation {'gaggag'}
+  		admin {true}
+  	end
   end
 end

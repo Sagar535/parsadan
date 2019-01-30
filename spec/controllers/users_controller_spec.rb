@@ -3,9 +3,13 @@ require './test/test_helper'
 # reqjuire
 
 RSpec.describe UsersController, type: :controller do 
-	# user with admin privilege
+	# users with admin privilege
 	let(:sagar) {
 		create(:super_user)
+	}
+
+	let (:super_user) {
+		create(:other_super_user)
 	}
 
 	# user without admin privilege
@@ -139,6 +143,18 @@ RSpec.describe UsersController, type: :controller do
 
 				expect(response).to redirect_to(root_url)
 			end
+
+			it "should not allow the admin attribute to be edited via the web" do
+				put :update, params: {
+					id: shikhar.id,
+					user: {
+						password: 'gaggag',
+						password_confirmation: 'gaggag',
+						admin: true
+					},
+				}, session: valid_session
+				expect(shikhar.reload.admin?).to be false
+			end
 		end
 
 		context "when params are invalid" do 
@@ -173,15 +189,35 @@ RSpec.describe UsersController, type: :controller do
 		end
 	end
 
-	it "should not allow the admin attribute to be edited via the web" do
-		put :update, params: {
-			id: shikhar.id,
-			user: {
-				password: 'gaggag',
-				password_confirmation: 'gaggag',
-				admin: true
-			},
-		}, session: valid_session
-		expect(shikhar.reload.admin?).to be false
+	describe "DELETE #destroy" do 
+		context "when user is not admin" do 
+			it "should not allow the user to delete" do
+				shikhar
+				expect {
+					delete :destroy, params: {id: shikhar.id}, 
+					session: valid_session
+				}.not_to change(User, :count)
+			end
+		end
+
+		context "when user is admin" do 
+			it "should not allow to delete other admin" do 
+				super_user
+				sagar
+				expect {
+					delete :destroy, params: {id: super_user.id},
+					session: admin_session
+				}.not_to change(User, :count)
+			end
+
+			it "should delete other user" do 
+				sagar
+				shikhar
+				expect {
+					delete :destroy, params: {id: shikhar.id},
+					session: admin_session
+				}.to change(User, :count).by(-1)
+			end
+		end
 	end
 end 
