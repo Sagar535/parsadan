@@ -9,5 +9,8 @@ FactoryBot.define do
     trait(:super) { admin { true } }
 
     trait(:non_active) { activated { false } }
+
+    factory :follower do end
+    factory :following do end
   end
 end
