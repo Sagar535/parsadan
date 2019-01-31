@@ -1,9 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe Micropost, type: :model do
-  let(:user) { create(:user) }
-  let(:micropost) { create(:micropost, user: user) }
-
   describe 'Association' do 
   	it { should belong_to(:user) }
   end
