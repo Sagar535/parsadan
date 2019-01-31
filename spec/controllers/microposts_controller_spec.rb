@@ -8,20 +8,14 @@ RSpec.describe MicropostsController, type: :controller do
 	# sample micropost attributes 
 	let(:sample_post_attributes) do
 		{
-		params: {
-			micropost: { content: 'Lorem ipsum dolor it' }
-			}
+			params: { micropost: { content: 'Lorem ipsum dolor it' } }
 		}
 	end
 
 	let(:micropost) { create(:micropost, user: user) }
 
 	# sample micropost
-	let(:sample_post) do 
-		{
-			params: { micropost: micropost }
-		}
-	end
+	let(:sample_post)  { { params: { micropost: micropost } } }
 
 	describe 'POST #create' do 
 		context "non logged in user posts" do
