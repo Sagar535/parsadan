@@ -46,7 +46,6 @@ group :development, :test do
   gem 'minitest-reporters'
   gem 'guard'
   gem 'guard-minitest'
-  gem 'rails-controller-testing'
   # Use sqlite3 as the database for Active Record
   gem 'sqlite3'
   # Adds support for Capybara system testing and selenium driver
