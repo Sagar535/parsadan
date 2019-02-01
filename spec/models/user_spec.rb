@@ -4,6 +4,9 @@ RSpec.describe User, type: :model do
 	let (:user) { create(:user) }
 
 	describe "user with valid attributes" do 
+		before do 
+			user
+		end
 		it "should be valid" do 
 			user
 			expect(user.valid?).to be true
