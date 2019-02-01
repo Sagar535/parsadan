@@ -24,4 +24,17 @@ RSpec.feature "UserSignups", type: :feature do
 
   	expect(page).to have_content('Please check your email to activate your account.')
   end
+
+  context "when invalid credentials" do 
+  	scenario "signup fail" do 
+  		visit('/signup')
+  		click_button "Submit"
+
+  		expect(page).to have_content("Name can't be blank")
+  		expect(page).to have_content("Email can't be blank")
+  		expect(page).to have_content("Email is invalid")
+  		expect(page).to have_content("Password can't be blank")
+  		expect(page).to have_content("Password is too short")
+  	end
+  end
 end
