@@ -3,7 +3,6 @@ require 'rails_helper'
 RSpec.feature "UserLogins", type: :feature do
   let(:user) { create(:user) }
   let(:other_user) { create(:user) }
-  let(:valid_params) { build(:user).attributes.merge(password: 'gaggag') }
 
   scenario "able to see the login form" do 
   	visit('/login')
@@ -12,16 +11,12 @@ RSpec.feature "UserLogins", type: :feature do
   end
 
   scenario "able to login" do 
-  	visit('/login')
-  	fill_in "session_email", :with => user.email
-  	fill_in "session_password", :with => valid_params[:password]
-  	click_button "Log in"
-
-  	expect(page).to have_link('', href: user_path(user))
-  	expect(page).to have_link('', href: user_path(user))  
-  	
-  	expect(page).to have_content(user.name)
-  	expect(page).to have_content(other_user.name)
+    user
+  	login(user, 'gaggag')
+    
+    expect(page).to have_content(user.name)
+    expect(page).to have_content(other_user.name)
+  	expect(page).to have_link(nil, user_path(user))  
   end
 
   context "when invalid credential" do 
