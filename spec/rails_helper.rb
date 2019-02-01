@@ -62,6 +62,7 @@ RSpec.configure do |config|
   config.include FactoryBot::Syntax::Methods
 
   config.include ApplicationHelper
+  config.include TestHelpers::Authentication, type: :feature
 
   Shoulda::Matchers.configure do |config|
     config.integrate do |with|
@@ -69,4 +70,20 @@ RSpec.configure do |config|
       with.library :rails
     end
   end
+
+  Capybara.register_driver :selenium do |app|
+   options = Selenium::WebDriver::Chrome::Options.new(
+     # It's the `headless` arg that make Chrome headless
+     # + you also need the `disable-gpu` arg due to a bug
+     # args: %w[headless no-sandbox disable-gpu disable-popup-blocking window-size=1366,768]
+     args: %w[no-sandbox disable-gpu disable-popup-blocking window-size=1366,768]
+   )
+   driver = Capybara::Selenium::Driver.new(
+     app,
+     browser: :chrome,
+     options: options
+   )
+   driver
+  end
+  Capybara.default_driver = :selenium
 end
