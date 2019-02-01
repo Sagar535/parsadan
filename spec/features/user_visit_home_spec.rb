@@ -14,11 +14,8 @@ RSpec.feature "UserVisitHomes", type: :feature do
   scenario "able to see the feeds by logged in user" do
   	user 
   	post
-  	# log_in_as(user)
-  	visit('/login')
-  	fill_in 'session_email', :with => user.email
-  	fill_in 'session_password', :with => 'gaggag'
-  	click_button 'Log in'
+
+  	login(user, 'gaggag')
   	visit('/')
   	expect(page).to have_content(user.followers.count)
   	expect(page).to have_content(user.following.count)
