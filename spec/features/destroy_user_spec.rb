@@ -6,11 +6,6 @@ RSpec.feature "DestroyUsers", type: :feature do
   let(:super_user) { create(:user, :super) }
 
   before do
-  	# visit '/login'
-  	# fill_in 'session_email', :with => current_user.email
-  	# fill_in 'session_password', :with => 'gaggag'
-  	# click_button 'Log in'
-
   	login(current_user, 'gaggag')
 
   	other_user
@@ -19,13 +14,13 @@ RSpec.feature "DestroyUsers", type: :feature do
   context "when admin visits" do
 	let(:current_user) { super_user }
   	scenario "shows the delete" do
-		expect(page).to have_content('delete')
-		expect(page).to have_link('delete')
+  		expect(page).to have_content('delete')
+  		expect(page).to have_link('delete')
   	end
   	scenario "deletes the user" do 
-		click_link 'delete'
-		page.accept_alert
-		expect(page).to have_content('User deleted')
+  		click_link 'delete'
+  		page.accept_alert
+  		expect(page).to have_content('User deleted')
   	end
   end
 
